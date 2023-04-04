@@ -14,17 +14,17 @@ class ChromeTest {
 
     @BeforeAll
     static void setupAll() {
-//        WebDriverManager.chromedriver().setup();
-        System.setProperty("webdriver.chrome.driver", "./driver/win/chromedriver.exe");
+        WebDriverManager.chromedriver().setup();
+//        System.setProperty("webdriver.chrome.driver", "./driver/win/chromedriver.exe");
     }
 
     @BeforeEach
     void setup() {
         ChromeOptions options = new ChromeOptions();
-//        options.addArguments("--disable-dev-shm-usage");
-//        options.addArguments("--no-sandbox");
-//        options.addArguments("--headless");
-        options.addArguments("--remote-allow-origins=*");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--headless");
+//        options.addArguments("--remote-allow-origins=*");
         driver = new ChromeDriver(options);
     }
 
