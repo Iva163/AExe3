@@ -1,11 +1,11 @@
 package ru.netology.web;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 class ChromeTest {
@@ -15,7 +15,6 @@ class ChromeTest {
     @BeforeAll
     static void setupAll() {
         WebDriverManager.chromedriver().setup();
-//        System.setProperty("webdriver.chrome.driver", "./driver/win/chromedriver.exe");
     }
 
     @BeforeEach
@@ -24,7 +23,6 @@ class ChromeTest {
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--no-sandbox");
         options.addArguments("--headless");
-//        options.addArguments("--remote-allow-origins=*");
         driver = new ChromeDriver(options);
     }
 
@@ -49,15 +47,33 @@ class ChromeTest {
     }
 
     @Test
-    void testEmptyForm() {
+    void testEmptyName() {
 
         driver.get("http://localhost:9999/");
+        driver.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("");
+        driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79012345678");
+        driver.findElement(By.cssSelector("[data-test-id=agreement]")).click();
         driver.findElement(By.tagName("button")).click();
         String expected = "Поле обязательно для заполнения";
-        String actual = driver.findElement(By.cssSelector("[data-test-id=name] span.input__sub")).getText().trim();
+        String actual = driver.findElement(By.cssSelector(".input_invalid .input__sub")).getText().trim();
         Assertions.assertEquals(expected, actual);
 
     }
+
+    @Test
+    void testEmptyPhone() {
+
+        driver.get("http://localhost:9999/");
+        driver.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Борисов Иван");
+        driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("");
+        driver.findElement(By.cssSelector("[data-test-id=agreement]")).click();
+        driver.findElement(By.tagName("button")).click();
+        String expected = "Поле обязательно для заполнения";
+        String actual = driver.findElement(By.cssSelector(".input_invalid .input__sub")).getText().trim();
+        Assertions.assertEquals(expected, actual);
+
+    }
+
     @Test
     void testNameLatin() {
 
@@ -67,7 +83,7 @@ class ChromeTest {
         driver.findElement(By.cssSelector("[data-test-id=agreement]")).click();
         driver.findElement(By.tagName("button")).click();
         String expected = "Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.";
-        String actual = driver.findElement(By.cssSelector("[data-test-id=name] span.input__sub")).getText().trim();
+        String actual = driver.findElement(By.cssSelector(".input_invalid .input__sub")).getText().trim();
         Assertions.assertEquals(expected, actual);
 
     }
