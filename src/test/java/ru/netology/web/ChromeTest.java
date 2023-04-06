@@ -97,7 +97,7 @@ class ChromeTest {
         driver.findElement(By.cssSelector("[data-test-id=agreement]")).click();
         driver.findElement(By.tagName("button")).click();
         String expected = "Телефон указан неверно. Должно быть 11 цифр, например, +79012345678.";
-        String actual = driver.findElement(By.cssSelector("[data-test-id=phone] span.input__sub")).getText().trim();
+        String actual = driver.findElement(By.cssSelector(".input_invalid .input__sub")).getText().trim();
         Assertions.assertEquals(expected, actual);
 
     }
@@ -110,7 +110,7 @@ class ChromeTest {
         driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79012345678");
         driver.findElement(By.tagName("button")).click();
         String expected = "Я соглашаюсь с условиями обработки и использования моих персональных данных и разрешаю сделать запрос в бюро кредитных историй";
-        String actual = driver.findElement(By.cssSelector("[data-test-id=agreement] span.checkbox__text")).getText().trim();
+        String actual = driver.findElement(By.cssSelector(".input_invalid .checkbox__text")).getText().trim();
         Assertions.assertEquals(expected, actual);
 
     }
